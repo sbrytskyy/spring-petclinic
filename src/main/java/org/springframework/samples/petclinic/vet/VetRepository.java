@@ -15,14 +15,16 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import java.util.Collection;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
 
 /**
  * Repository class for <code>Vet</code> domain objects All method names are compliant
@@ -55,6 +57,20 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	@Cacheable("vets")
 	Page<Vet> findAll(Pageable pageable) throws DataAccessException;
 
-	;
+	/**
+	 * Retrieve an {@link Vet} from the data store by id.
+	 * @param id the id to search for
+	 * @return the {@link Vet} if found
+	 */
+	@Query("SELECT vet FROM Vet vet WHERE vet.id =:id")
+	@Transactional(readOnly = true)
+	Vet findById(@Param("id") Integer id);
+
+	/**
+	 * Save an {@link Vet} to the data store, either inserting or updating it.
+	 * @param vet the {@link Vet} to save
+	 */
+	@CacheEvict(value="vets", allEntries=true)
+	void save(Vet vet);
 
 }
