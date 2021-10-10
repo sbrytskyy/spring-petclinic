@@ -13,6 +13,9 @@
       <tr>
         <th>Name</th>
         <td><b th:text="*{firstName + ' ' + lastName}"></b></td>
+        <td><span th:each="specialty : ${vet.specialties}"
+                  th:text="${specialty.name + ' '}"/> <span
+          th:if="${vet.nrOfSpecialties == 0}">none</span></td>
       </tr>
     </table>
 

@@ -10,6 +10,12 @@
         th:replace="~{fragments/inputField :: input ('First Name', 'firstName', 'text')}" />
       <input
         th:replace="~{fragments/inputField :: input ('Last Name', 'lastName', 'text')}" />
+      <select id="specialties" th:field="*{specialties}" size="10" multiple="multiple">
+        <option th:each="spec : ${allSpecialties}"
+                th:value="${{spec}}"
+                th:text="${spec.name}">
+        </option>
+      </select>
     </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
