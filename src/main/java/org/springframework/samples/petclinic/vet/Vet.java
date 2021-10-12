@@ -15,8 +15,8 @@
  */
 package org.springframework.samples.petclinic.vet;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -44,7 +44,7 @@ public class Vet extends Person {
 
 	public Set<Specialty> getSpecialties() {
 		if (this.specialties == null) {
-			this.specialties = new HashSet<>();
+			this.specialties = new TreeSet<>();
 		}
 		return this.specialties;
 	}
