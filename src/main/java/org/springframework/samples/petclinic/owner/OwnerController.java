@@ -17,9 +17,7 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.List;
 import java.util.Map;
-
 import javax.validation.Valid;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -101,11 +99,11 @@ class OwnerController {
 			result.rejectValue("lastName", "notFound", "not found");
 			return "owners/findOwners";
 		}
-		else if (ownersResults.getTotalElements() == 1) {
-			// 1 owner found
-			owner = ownersResults.iterator().next();
-			return "redirect:/owners/" + owner.getId();
-		}
+		// else if (ownersResults.getTotalElements() == 1) {
+		// 	// 1 owner found
+		// 	owner = ownersResults.iterator().next();
+		// 	return "redirect:/owners/" + owner.getId();
+		// }
 		else {
 			// multiple owners found
 			lastName = owner.getLastName();
@@ -114,7 +112,7 @@ class OwnerController {
 	}
 
 	private String addPaginationModel(int page, Model model, String lastName, Page<Owner> paginated) {
-		model.addAttribute("listOwners", paginated);
+		// model.addAttribute("listOwners", paginated);
 		List<Owner> listOwners = paginated.getContent();
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", paginated.getTotalPages());

@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -109,18 +108,17 @@ class VetController {
 		return mav;
 	}
 
-	@GetMapping("/vets.html")
+	@GetMapping("/vets")
 	public String showVetList(@RequestParam(defaultValue = "1") int page, Model model) {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for Object-Xml mapping
-		Vets vets = new Vets();
 		Page<Vet> paginated = findPaginated(page);
-		vets.getVetList().addAll(paginated.toList());
 		return addPaginationModel(page, paginated, model);
 
 	}
 
 	private String addPaginationModel(int page, Page<Vet> paginated, Model model) {
+	    //model.addAttribute("listVets", paginated);
 		List<Vet> listVets = paginated.getContent();
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", paginated.getTotalPages());
@@ -134,14 +132,4 @@ class VetController {
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		return vets.findAll(pageable);
 	}
-
-	@GetMapping({ "/vets" })
-	public @ResponseBody Vets showResourcesVetList() {
-		// Here we are returning an object of type 'Vets' rather than a collection of Vet
-		// objects so it is simpler for JSon/Object mapping
-		Vets vets = new Vets();
-		vets.getVetList().addAll(this.vets.findAll());
-		return vets;
-	}
-
 }
