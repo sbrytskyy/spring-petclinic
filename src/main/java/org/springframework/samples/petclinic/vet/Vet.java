@@ -91,4 +91,10 @@ public class Vet extends Person {
 		return Collections.unmodifiableList(sortedVisits);
 	}
 
+	@Override
+	public String toString() {
+		return this.getFirstName() + " "
+			+ this.getLastName()
+			+ "; " + this.getSpecialties();
+	}
 }

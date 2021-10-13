@@ -138,8 +138,8 @@ public class Owner extends Person {
 
 	@Override
 	public String toString() {
-		return this.getLastName() + " "
-				+ this.getFirstName()
+		return this.getFirstName() + " "
+				+ this.getLastName()
 				+ "; " + this.address + " " + this.city
 				+ "; " + this.telephone;
 	}
