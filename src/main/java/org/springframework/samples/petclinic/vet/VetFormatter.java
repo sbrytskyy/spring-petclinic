@@ -42,13 +42,11 @@ public class VetFormatter implements Formatter<Vet> {
 
 	@Override
 	public Vet parse(String text, Locale locale) throws ParseException {
-		String[] name = text.split(" ");
-		if (name.length == 2) {
-			Collection<Vet> findVets = this.vets.findAll();
-			for (Vet vet : findVets) {
-				if (vet.getFirstName().equals(name[0]) && vet.getLastName().equals(name[1])) {
-					return vet;
-				}
+		int id = Integer.parseInt(text);
+		Collection<Vet> findVets = this.vets.findAll();
+		for (Vet vet : findVets) {
+			if (vet.getId().equals(id)) {
+				return vet;
 			}
 		}
 		throw new ParseException("Vet not found: " + text, 0);

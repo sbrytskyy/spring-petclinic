@@ -18,10 +18,14 @@ package org.springframework.samples.petclinic.visit;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.samples.petclinic.vet.Vet;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -41,11 +45,13 @@ public class Visit extends BaseEntity {
 	@Column(name = "description")
 	private String description;
 
-	@Column(name = "pet_id")
-	private Integer petId;
+	@ManyToOne
+	@JoinColumn(name = "pet_id")
+	private Pet pet;
 
-	@Column(name = "vet_id")
-	private Integer vetId;
+	@ManyToOne
+	@JoinColumn(name = "vet_id")
+	private Vet vet;
 
 	/**
 	 * Creates a new instance of Visit for the current date
@@ -70,19 +76,20 @@ public class Visit extends BaseEntity {
 		this.description = description;
 	}
 
-	public Integer getPetId() {
-		return this.petId;
+
+	public Pet getPet() {
+		return pet;
 	}
 
-	public void setPetId(Integer petId) {
-		this.petId = petId;
+	public void setPet(Pet pet) {
+		this.pet = pet;
 	}
 
-	public Integer getVetId() {
-		return vetId;
+	public Vet getVet() {
+		return vet;
 	}
 
-	public void setVetId(Integer vetId) {
-		this.vetId = vetId;
+	public void setVet(Vet vet) {
+		this.vet = vet;
 	}
 }
