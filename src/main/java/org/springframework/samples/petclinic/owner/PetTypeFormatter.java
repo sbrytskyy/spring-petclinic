@@ -15,13 +15,12 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.Formatter;
-import org.springframework.stereotype.Component;
-
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Locale;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.Formatter;
+import org.springframework.stereotype.Component;
 
 /**
  * Instructs Spring MVC on how to parse and print elements of type 'PetType'. Starting
@@ -50,9 +49,10 @@ public class PetTypeFormatter implements Formatter<PetType> {
 
 	@Override
 	public PetType parse(String text, Locale locale) throws ParseException {
+		int id = Integer.parseInt(text);
 		Collection<PetType> findPetTypes = this.pets.findPetTypes();
 		for (PetType type : findPetTypes) {
-			if (type.getName().equals(text)) {
+			if (type.getId().equals(id)) {
 				return type;
 			}
 		}
