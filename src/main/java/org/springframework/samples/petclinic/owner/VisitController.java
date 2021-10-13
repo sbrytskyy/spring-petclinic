@@ -15,15 +15,21 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.util.Collection;
+import java.util.Map;
+import javax.validation.Valid;
+import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * @author Juergen Hoeller
@@ -38,10 +44,13 @@ class VisitController {
 	private final VisitRepository visits;
 
 	private final PetRepository pets;
+	private final VetRepository vets;
 
-	public VisitController(VisitRepository visits, PetRepository pets) {
+	public VisitController(VisitRepository visits, PetRepository pets,
+		VetRepository vets) {
 		this.visits = visits;
 		this.pets = pets;
+		this.vets = vets;
 	}
 
 	@InitBinder
@@ -69,6 +78,9 @@ class VisitController {
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
 	@GetMapping("/owners/*/pets/{petId}/visits/new")
 	public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
+		// Add vets
+		Collection<Vet> vets = this.vets.findAll();
+		model.put("vets", vets);
 		return "pets/createOrUpdateVisitForm";
 	}
 
