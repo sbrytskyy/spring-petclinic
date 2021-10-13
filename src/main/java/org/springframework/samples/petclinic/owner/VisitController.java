@@ -58,6 +58,11 @@ class VisitController {
 		dataBinder.setDisallowedFields("id");
 	}
 
+	@ModelAttribute("vets")
+	public Collection<Vet> populateVets() {
+		return this.vets.findAll();
+	}
+
 	/**
 	 * Called before each and every @RequestMapping annotated method. 2 goals: - Make sure
 	 * we always have fresh data - Since we do not use the session scope, make sure that
@@ -78,9 +83,6 @@ class VisitController {
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
 	@GetMapping("/owners/*/pets/{petId}/visits/new")
 	public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
-		// Add vets
-		Collection<Vet> vets = this.vets.findAll();
-		model.put("vets", vets);
 		return "pets/createOrUpdateVisitForm";
 	}
 
