@@ -22,6 +22,8 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.samples.petclinic.visit.Visit;
+import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,9 +46,12 @@ class VetController {
 	private static final String VIEWS_VET_CREATE_OR_UPDATE_FORM = "vets/createOrUpdateVetForm";
 
 	private final VetRepository vets;
+	private final VisitRepository visits;
 
-	public VetController(VetRepository clinicService) {
+	public VetController(VetRepository clinicService,
+		VisitRepository visits) {
 		this.vets = clinicService;
+		this.visits = visits;
 	}
 
 	@ModelAttribute("allSpecialties")
@@ -101,9 +106,8 @@ class VetController {
 	public ModelAndView showVet(@PathVariable("vetId") int vetId) {
 		ModelAndView mav = new ModelAndView("vets/vetDetails");
 		Vet vet = this.vets.findById(vetId);
-		// for (Pet pet : owner.getPets()) {
-		// 	pet.setVisitsInternal(visits.findByPetId(pet.getId()));
-		// }
+		List<Visit> visits = this.visits.findByVetId(vet.getId());
+		vet.setVisitsInternal(visits);
 		mav.addObject(vet);
 		return mav;
 	}
