@@ -16,21 +16,20 @@
 
 package org.springframework.samples.petclinic.owner;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  * Test class for {@link PetTypeFormatter}
@@ -61,7 +60,7 @@ class PetTypeFormatterTests {
 	@Test
 	void shouldParse() throws ParseException {
 		given(this.pets.findPetTypes()).willReturn(makePetTypes());
-		PetType petType = petTypeFormatter.parse("Bird", Locale.ENGLISH);
+		PetType petType = petTypeFormatter.parse("2", Locale.ENGLISH);
 		assertThat(petType.getName()).isEqualTo("Bird");
 	}
 
@@ -69,7 +68,7 @@ class PetTypeFormatterTests {
 	void shouldThrowParseException() throws ParseException {
 		given(this.pets.findPetTypes()).willReturn(makePetTypes());
 		Assertions.assertThrows(ParseException.class, () -> {
-			petTypeFormatter.parse("Fish", Locale.ENGLISH);
+			petTypeFormatter.parse("11", Locale.ENGLISH);
 		});
 	}
 
@@ -82,11 +81,13 @@ class PetTypeFormatterTests {
 		petTypes.add(new PetType() {
 			{
 				setName("Dog");
+				setId(1);
 			}
 		});
 		petTypes.add(new PetType() {
 			{
 				setName("Bird");
+				setId(2);
 			}
 		});
 		return petTypes;

@@ -49,7 +49,12 @@ public class PetTypeFormatter implements Formatter<PetType> {
 
 	@Override
 	public PetType parse(String text, Locale locale) throws ParseException {
-		int id = Integer.parseInt(text);
+		int id;
+		try {
+			id = Integer.parseInt(text);
+		} catch (NumberFormatException e) {
+			throw new ParseException("Wrong type id: " + text, 0);
+		}
 		Collection<PetType> findPetTypes = this.pets.findPetTypes();
 		for (PetType type : findPetTypes) {
 			if (type.getId().equals(id)) {

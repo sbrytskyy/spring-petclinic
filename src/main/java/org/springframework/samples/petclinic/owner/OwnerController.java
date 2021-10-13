@@ -99,11 +99,11 @@ class OwnerController {
 			result.rejectValue("lastName", "notFound", "not found");
 			return "owners/findOwners";
 		}
-		// else if (ownersResults.getTotalElements() == 1) {
-		// 	// 1 owner found
-		// 	owner = ownersResults.iterator().next();
-		// 	return "redirect:/owners/" + owner.getId();
-		// }
+		else if (ownersResults.getTotalElements() == 1) {
+			// 1 owner found
+			owner = ownersResults.iterator().next();
+			return "redirect:/owners/" + owner.getId();
+		}
 		else {
 			// multiple owners found
 			lastName = owner.getLastName();
