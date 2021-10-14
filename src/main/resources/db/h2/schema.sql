@@ -74,3 +74,6 @@ ALTER TABLE visits ADD CONSTRAINT fk_visits_working_hour FOREIGN KEY (time_id) R
 CREATE INDEX visits_pet_id ON visits (pet_id);
 CREATE INDEX visits_vet_id ON visits (vet_id);
 CREATE INDEX visits_time_id ON visits (time_id);
+
+ALTER TABLE visits
+  ADD CONSTRAINT visitConflict UNIQUE (vet_id, visit_date, time_id);

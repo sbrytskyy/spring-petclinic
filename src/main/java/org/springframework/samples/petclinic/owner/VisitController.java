@@ -15,12 +15,14 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Map;
 import javax.validation.Valid;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.samples.petclinic.visit.Visit;
@@ -105,7 +107,14 @@ class VisitController {
 			return "pets/createOrUpdateVisitForm";
 		}
 		else {
-			this.visits.save(visit);
+			try {
+				this.visits.save(visit);
+			} catch (DataIntegrityViolationException e) {
+				String err = "Appointment conflict. Looks like this time has been booked by some other pet. Please select different date and time.";
+				FieldError error = new FieldError("visit", "time", err);
+				result.addError(error);
+				return "pets/createOrUpdateVisitForm";
+			}
 			return "redirect:/owners/{ownerId}";
 		}
 	}
@@ -126,7 +135,15 @@ class VisitController {
 		LocalDate date = visit.getDate();
 		LocalDate today = LocalDate.now();
 		if (date.isBefore(today)) {
-			String err = "Appointment date can not be in the past";
+			String err = "Appointment can not be scheduled in the past";
+			FieldError error = new FieldError("visit", "date", err);
+			result.addError(error);
+		}
+
+		DayOfWeek d = date.getDayOfWeek();
+		boolean weekend = d == DayOfWeek.SATURDAY || d == DayOfWeek.SUNDAY;
+		if (weekend) {
+			String err = "Appointment can not be scheduled on weekend";
 			FieldError error = new FieldError("visit", "date", err);
 			result.addError(error);
 		}
@@ -134,12 +151,10 @@ class VisitController {
 		WorkingHour wh = visit.getTime();
 		LocalTime localTime = LocalTime.parse(wh.getName().toUpperCase(), DateTimeFormatter.ofPattern("[h:mm a][hh:mm a]"));
 		LocalTime now = LocalTime.now().plusHours(1);
-		if (localTime.isBefore(now)) {
-			String err = "Appointment time can not be in the past";
+		if (date.isEqual(today) && localTime.isBefore(now)) {
+			String err = "Appointment can not be scheduled in the past";
 			FieldError error = new FieldError("visit", "time", err);
 			result.addError(error);
 		}
-
-		// TODO verify if slot is free
 	}
 }
