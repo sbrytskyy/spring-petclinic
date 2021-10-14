@@ -54,4 +54,5 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 	@Transactional(readOnly = true)
 	List<WorkingHour> findWorkingHours();
 
+	void deleteById(Integer visitId);
 }

@@ -99,9 +99,22 @@ class VisitController {
 			return "pets/createOrUpdateVisitForm";
 		}
 		else {
+			// TODO verify if slot is free
+
 			this.visits.save(visit);
 			return "redirect:/owners/{ownerId}";
 		}
 	}
 
+	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/{visitId}/cancel")
+	public String processCancelVisitForm(@PathVariable("ownerId") int ownerId,
+		@PathVariable("petId") int petId,
+		@PathVariable("visitId") int visitId,
+		Map<String, Object> model) {
+
+		// TODO free visit slot
+		visits.deleteById(visitId);
+
+		return "redirect:/owners/{ownerId}";
+	}
 }
