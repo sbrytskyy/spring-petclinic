@@ -125,7 +125,6 @@ class VisitController {
 		@PathVariable("visitId") int visitId,
 		Map<String, Object> model) {
 
-		// TODO free visit slot
 		visits.deleteById(visitId);
 
 		return "redirect:/owners/{ownerId}";
