@@ -15,6 +15,9 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Map;
 import javax.validation.Valid;
@@ -25,6 +28,7 @@ import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.samples.petclinic.visit.WorkingHour;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -95,12 +99,12 @@ class VisitController {
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
 	public String processNewVisitForm(@Valid Visit visit, BindingResult result) {
+		validateVisit(visit, result);
+
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		}
 		else {
-			// TODO verify if slot is free
-
 			this.visits.save(visit);
 			return "redirect:/owners/{ownerId}";
 		}
@@ -116,5 +120,26 @@ class VisitController {
 		visits.deleteById(visitId);
 
 		return "redirect:/owners/{ownerId}";
+	}
+
+	private void validateVisit(Visit visit, BindingResult result) {
+		LocalDate date = visit.getDate();
+		LocalDate today = LocalDate.now();
+		if (date.isBefore(today)) {
+			String err = "Appointment date can not be in the past";
+			FieldError error = new FieldError("visit", "date", err);
+			result.addError(error);
+		}
+
+		WorkingHour wh = visit.getTime();
+		LocalTime localTime = LocalTime.parse(wh.getName().toUpperCase(), DateTimeFormatter.ofPattern("[h:mm a][hh:mm a]"));
+		LocalTime now = LocalTime.now().plusHours(1);
+		if (localTime.isBefore(now)) {
+			String err = "Appointment time can not be in the past";
+			FieldError error = new FieldError("visit", "time", err);
+			result.addError(error);
+		}
+
+		// TODO verify if slot is free
 	}
 }
