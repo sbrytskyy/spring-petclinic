@@ -33,6 +33,8 @@
       <input
         th:replace="~{fragments/inputField :: input ('Date', 'date', 'date')}"  />
       <input
+        th:replace="~{fragments/selectField :: select ('Time', 'time', ${workingHours})}" />
+      <input
         th:replace="~{fragments/inputField :: input ('Description', 'description', 'text')}" />
       <input
         th:replace="~{fragments/selectField :: select ('Vet', 'vet', ${vets})}" />

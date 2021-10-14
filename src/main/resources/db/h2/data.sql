@@ -48,7 +48,18 @@ INSERT INTO pets VALUES (11, 'Freddy', '2010-03-09', 5, 9);
 INSERT INTO pets VALUES (12, 'Lucky', '2010-06-24', 2, 10);
 INSERT INTO pets VALUES (13, 'Sly', '2012-06-08', 1, 10);
 
-INSERT INTO visits VALUES (1, 7, 2, '2013-01-01', 'rabies shot');
-INSERT INTO visits VALUES (2, 8, 1, '2013-01-02', 'rabies shot');
-INSERT INTO visits VALUES (3, 8, 2, '2013-01-03', 'neutered');
-INSERT INTO visits VALUES (4, 7, 5, '2013-01-04', 'spayed');
+INSERT INTO working_hour VALUES (1, '8:00 am');
+INSERT INTO working_hour VALUES (2, '9:00 am');
+INSERT INTO working_hour VALUES (3, '10:00 am');
+INSERT INTO working_hour VALUES (4, '11:00 am');
+INSERT INTO working_hour VALUES (5, '12:00 pm');
+INSERT INTO working_hour VALUES (6, '1:00 pm');
+INSERT INTO working_hour VALUES (7, '2:00 pm');
+INSERT INTO working_hour VALUES (8, '3:00 pm');
+INSERT INTO working_hour VALUES (9, '4:00 pm');
+INSERT INTO working_hour VALUES (10, '5:00 pm');
+
+INSERT INTO visits VALUES (1, 7, 2, '2013-01-01', 1, 'rabies shot');
+INSERT INTO visits VALUES (2, 8, 1, '2013-01-02', 3, 'rabies shot');
+INSERT INTO visits VALUES (3, 8, 2, '2013-01-03', 10, 'neutered');
+INSERT INTO visits VALUES (4, 7, 5, '2013-01-04', 4, 'spayed');

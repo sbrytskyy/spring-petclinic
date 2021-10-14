@@ -17,8 +17,10 @@ package org.springframework.samples.petclinic.visit;
 
 import java.util.List;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Repository class for <code>Visit</code> domain objects All method names are compliant
@@ -43,5 +45,13 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 	List<Visit> findByPetId(Integer petId);
 
 	List<Visit> findByVetId(Integer vetId);
+
+	/**
+	 * Retrieve all {@link WorkingHour}s from the data store.
+	 * @return a Collection of {@link WorkingHour}s.
+	 */
+	@Query("SELECT wh FROM WorkingHour wh")
+	@Transactional(readOnly = true)
+	List<WorkingHour> findWorkingHours();
 
 }

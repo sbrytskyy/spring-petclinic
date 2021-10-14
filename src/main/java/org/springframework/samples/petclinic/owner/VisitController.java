@@ -22,6 +22,7 @@ import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
+import org.springframework.samples.petclinic.visit.WorkingHour;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -61,6 +62,11 @@ class VisitController {
 	@ModelAttribute("vets")
 	public Collection<Vet> populateVets() {
 		return this.vets.findAll();
+	}
+
+	@ModelAttribute("workingHours")
+	public Collection<WorkingHour> populateWorkingHours() {
+		return this.visits.findWorkingHours();
 	}
 
 	/**

@@ -41,6 +41,10 @@ public class Visit extends BaseEntity {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 
+	@ManyToOne
+	@JoinColumn(name = "time_id")
+	private WorkingHour time;
+
 	@NotEmpty
 	@Column(name = "description")
 	private String description;
@@ -91,5 +95,13 @@ public class Visit extends BaseEntity {
 
 	public void setVet(Vet vet) {
 		this.vet = vet;
+	}
+
+	public WorkingHour getTime() {
+		return time;
+	}
+
+	public void setTime(WorkingHour time) {
+		this.time = time;
 	}
 }
